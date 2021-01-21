@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.thymeleaf.spring5.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring5.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class SampleController {
@@ -19,7 +18,7 @@ public class SampleController {
         Flux<String> flux = Flux
                 .range(0, 5)
                 .map(i -> "count :" + i)
-                .repeat(10)
+                .repeat(2)
                 .delayElements(Duration.ofSeconds(1L));
 
 
@@ -30,6 +29,16 @@ public class SampleController {
         model.addAttribute("items", reactiveDataDrivenMode);
 
         return "index";
+
+    }
+
+    @GetMapping("/hello")
+    public String helloWorld(Model model) {
+
+        Mono<String> mono = Mono.just("Hello World!!");
+        model.addAttribute("item", mono);
+
+        return "hello";
 
     }
 
